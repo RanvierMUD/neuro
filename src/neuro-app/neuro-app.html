@@ -1,0 +1,257 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<link rel="import" href="player-display.html">
+<link rel="import" href="target-display.html">
+
+<dom-module id="neuro-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: #000;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+
+        --ranvier-green: #689F63;
+      }
+
+      *, *::before, *::after {
+        box-sizing: inherit;
+      }
+
+      input {
+        border: 0;
+        box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
+        padding: 4px;
+      }
+
+      #toolbar {
+        height: 48px;
+        background-color: #666;
+        color: #fff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .logo {
+        height: 36px;
+        width: 36px;
+        margin-left: 12px;
+      }
+
+      .control {
+        margin-left: 24px;
+      }
+
+      .control label {
+        margin-right: 8px;
+      }
+
+      .ranvier-btn {
+        background-color: var(--ranvier-green);
+        border: 0;
+        border: 1px solid rgb(167, 202, 164);
+        box-shadow: 2px 2px 4px #333;
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 24px;
+        padding: 8px 12px;
+        position: relative;
+      }
+      .ranvier-btn:hover {
+        left: -1px;
+        top: -1px;
+        box-shadow: 4px 4px 4px #333;
+      }
+      .ranvier-btn:active {
+        top: 1px;
+        right: 1px;
+        box-shadow: 0 0 4px #333;
+      }
+      .ranvier-btn:focus {
+        outline: none;
+      }
+
+      #output {
+        flex: 1;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 14px;
+        white-space: pre-wrap;
+        background-color: #000;
+        color: #e0e0e0;
+        padding: 8px;
+        overflow-y: auto;
+        border-left: 1px solid #555;
+        border-right: 1px solid #555;
+      }
+      .output-message.error {
+        display: block;
+        border: 1px solid #f33;
+        background-color: #faa;
+        padding: 8px;
+        color: #fff;
+      }
+      .output-message.info {
+        display: block;
+        border: 1px solid #33f;
+        background-color: #aaf;
+        color: #fff;
+        padding: 8px;
+      }
+      .output-message a {
+        color: var(--ranvier-green);
+      }
+      #input {
+        display: block;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 16px;
+        height: 32px;
+      }
+      #targets {
+        position: absolute;
+        top: 48px;
+        width: 100%;
+        pointer-events: none;
+      }
+    </style>
+    <div id="toolbar">
+      <img class="logo" src="./assets/logo.png">
+
+      <div class="control">
+        <label for="hostname">Hostname</label>
+        <input id="hostname" value="{{hostname::input}}">
+      </div>
+
+      <div class="control">
+        <label for="port">Port</label>
+        <input id="port" value="{{port::input}}">
+      </div>
+
+      <button class="ranvier-btn" on-tap="connect">Connect</button>
+    </div>
+    <div id="output"></div>
+    <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
+    <player-display data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
+    <target-display id="targets" targets="[[playerData.targets]]" hidden$="[[!playerData]]"></taret-display>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class NeuroApp extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'neuro-app'; }
+      static get properties() {
+        return {
+          hostname: {
+            type: String,
+            value: 'localhost'
+          },
+
+          port: {
+            type: Number,
+            value: 4000,
+          },
+
+          input: {
+            type: String,
+            value: ''
+          },
+
+          playerData: {
+            type: Object,
+            value: null,
+          },
+        };
+      }
+
+      ready() {
+        this.ansi_up = new AnsiUp;
+        super.ready();
+        this.$.input.focus();
+      }
+
+      connect() {
+        if (!this.hostname || !this.port) {
+          return alert('Invalid hostname or port');
+        }
+
+        this.websocket = new WebSocket(`ws://${this.hostname}:${this.port}`);
+        this.websocket.onopen = this._wsOnOpen.bind(this);
+        this.websocket.onclose = this._wsOnClose.bind(this);
+        this.websocket.onmessage = this._wsOnMessage.bind(this);
+        this.websocket.onerror = this._wsOnError.bind(this);
+
+        this.$.input.focus();
+      }
+
+      writeOutput(message, elClass = '', raw = false) {
+        var span = document.createElement('span');
+        message = raw ? message : this.ansi_up.ansi_to_html(message);
+        // find links
+        message = message.replace(
+          /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+          '<a href="http://$&" target="_blank">$&</a>'
+        );
+        span.innerHTML = message;
+
+        span.classList.add('output-message');
+        if (elClass) {
+          span.classList.add(elClass);
+        }
+
+        this.$.output.appendChild(span);
+        this.$.output.scrollTop = this.$.output.scrollHeight;
+      }
+
+      _wsOnMessage(e) {
+        var data = JSON.parse(e.data);
+        if (data.type === 'message') {
+          this.writeOutput(data.message);
+        } else if (data.type === 'data') {
+          this.playerData = data.data;
+        }
+      }
+
+      _wsOnOpen(e) {
+        this.writeOutput('Connected', 'info', true);
+      }
+
+      _wsOnClose(e) {
+        this.writeOutput('Connection Closed', 'info', true);
+        this.playerData = null;
+      }
+
+      _wsOnError(e) {
+        console.log(e);
+        this.writeOutput('Websocket Error', 'error', true);
+      }
+
+      _checkEnter(e) {
+        if (e.key === 'Enter') {
+          const message = this.input.trim();
+          if (!message.length) {
+            return;
+          }
+
+          if ((message === 'quit' || message === 'exit') && (!this.websocket || this.websocket.readyState === 3)) {
+            require('electron').remote.getCurrentWindow().close();
+          }
+
+          this.websocket.send(message);
+          this.input = '';
+        }
+      }
+    }
+
+    window.customElements.define(NeuroApp.is, NeuroApp);
+  </script>
+</dom-module>

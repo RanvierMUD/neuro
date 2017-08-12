@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
+<link rel="import" href="neuro-statbar.html">
+
+<dom-module id="player-display">
+  <template>
+    <style>
+      :host {
+        height: 64px;
+        background-color: #333;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .energy {
+        --statbar-bg: #F57F17;
+        --statbar-current-bg: #FBC02D;
+        --statbar-border-color: #FDD835;
+      }
+    </style>
+    <template is="dom-if" if="[[data.attributes.health]]">
+      <neuro-statbar class="hp" current-value="[[data.attributes.health.current]]" max-value="[[data.attributes.health.max]]"></neuro-statbar>
+    </template>
+
+    <template is="dom-if" if="[[data.attributes.energy]]">
+      <neuro-statbar class="energy" current-value="[[data.attributes.energy.current]]" max-value="[[data.attributes.energy.max]]"></neuro-statbar>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PlayerDisplay extends Polymer.Element {
+      static get is() { return 'player-display'; }
+      static get properties() {
+        return {
+          data: {
+            type: Object
+          },
+        };
+      }
+    }
+
+    window.customElements.define(PlayerDisplay.is, PlayerDisplay);
+  </script>
+</dom-module>
+

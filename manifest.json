@@ -1,0 +1,7 @@
+{
+  "name": "Neuro",
+  "short_name": "Neuro",
+  "description": "Ranvier websocket client",
+  "start_url": "/",
+  "display": "standalone"
+}

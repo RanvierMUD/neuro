@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="neuro-statbar">
+  <template>
+    <style>
+      :host {
+        background-color: #222;
+        box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.6);
+        display: flex;
+        height: 32px;
+        overflow: hidden;
+        padding: 4px;
+        width: 384px;
+      }
+      #container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+      #currentBar {
+        height: 100%;
+        transition: all 300ms ease;
+        background-color: var(--statbar-current-bg, #f00);
+        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+      }
+      #label {
+        align-items: center;
+        color: #fff;
+        display: flex;
+        flex-direction: row;
+        font-weight: bold;
+        height: 32px;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+        text-shadow: 1px 1px 2px #000;
+        @apply --statbar-label;
+      }
+
+      #valueDivider {
+        margin: 0 8px;
+        @apply --statbar-divider;
+      }
+    </style>
+    <div id="container">
+      <div id="label">[[currentValue]] <span id="valueDivider">/</span> [[maxValue]]</div>
+      <div id="currentBar"></div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class NeuroStatbar extends Polymer.Element {
+      static get is() { return 'neuro-statbar'; }
+      static get properties() {
+        return {
+          currentValue: {
+            type: Number,
+            value: 0,
+            observer: '_updateCurrentValue',
+          },
+
+          maxValue: {
+            type: Number,
+            value: 0
+          },
+        };
+      }
+
+      _updateCurrentValue() {
+        this.$.currentBar.style.width = ((this.currentValue / this.maxValue) * 100) + '%';
+      }
+    }
+
+    window.customElements.define(NeuroStatbar.is, NeuroStatbar);
+  </script>
+</dom-module>

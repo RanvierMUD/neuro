@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Neuro</title>
+    <meta name="description" content="Ranvier websocket client">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="./manifest.json">
+
+    <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="./bower_components/ansi_up/ansi_up.js"></script>
+
+    <link rel="import" href="./src/neuro-app/neuro-app.html">
+    <style>
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto Mono'), local('RobotoMono-Regular'),
+        url('./assets/fonts/roboto-mono-v4-latin-regular.woff2') format('woff2'),
+        url('./assets/fonts/roboto-mono-v4-latin-regular.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto'), local('Roboto-Regular'),
+           url('./assets/fonts/roboto-v16-latin-regular.woff2') format('woff2'),
+           url('./assets/fonts/roboto-v16-latin-regular.woff') format('woff');
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    </style>
+  </head>
+  <body>
+    <neuro-app></neuro-app>
+    <script>
+      require('./renderer.js')
+    </script>
+  </body>
+</html>

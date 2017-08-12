@@ -1,0 +1,92 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<link rel="import" href="neuro-statbar.html">
+
+<dom-module id="target-display">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .target-bar {
+        padding: 8px;
+        background-color: #333;
+        transform: scale(0.8);
+        margin: 12px 0;
+      }
+      .target-name {
+        margin-bottom: 4px;
+        color: #fff;
+        text-shadow: 1px 1px 2px #555;
+        font-weight: bold;
+      }
+
+      .target-bar.main-target {
+        transform: scale(1);
+      }
+    </style>
+    <div class="target-bar main-target" hidden$="[[!targets.length]]">
+      <div class="target-name">[[_mainTarget.name]]</div>
+      <neuro-statbar current-value="[[_mainTarget.health.current]]" max-value="[[_mainTarget.health.max]]"></neuro-statbar>
+    </div>
+    <template is="dom-repeat" items="[[_secondaryTargets]]">
+      <div class="target-bar">
+        <div class="target-name">[[item.name]]</div>
+          <neuro-statbar current-value="[[item.health.current]]" max-value="[[item.health.max]]"></neuro-statbar>
+        </div>
+      </div>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TargetDisplay extends Polymer.Element {
+      static get is() { return 'target-display'; }
+      static get properties() {
+        return {
+          targets: {
+            type: Array,
+            value: function () {
+              return [];
+            },
+            observer: '_targetsChanged'
+          },
+
+          _mainTarget: {
+            type: Object
+          },
+
+          _secondaryTargets: {
+            type: Array,
+          }
+        };
+      }
+
+      _targetsChanged() {
+        if (!this.targets || !this.targets.length) {
+          this._mainTarget = null;
+          this._secondaryTargets = [];
+          return;
+        }
+
+        this._mainTarget = this.targets[0];
+
+        if (this.targets.length > 1) {
+          this._secondaryTargets = this.targets.slice(1);
+        } else {
+          this._secondaryTargets = [];
+        }
+      }
+    }
+
+    window.customElements.define(TargetDisplay.is, TargetDisplay);
+  </script>
+</dom-module>
