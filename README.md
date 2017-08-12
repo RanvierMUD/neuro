@@ -2,7 +2,7 @@
 
 Neuro is a simple and easily-extensible websocket client to use with the [Ranvier](https://ranviermud.com) MUD game engine.
 
-<p align="center"><img width="640" src="https://raw.githubusercontent.com/shawncplus/neuro/staging/assets/screenshot.png"></p>
+<p align="center"><img width="640" src="https://raw.githubusercontent.com/shawncplus/neuro/master/assets/screenshot.png"></p>
 
 It currently does not ship with any distribution strategy (e.g.,
 [electron-packager](https://github.com/electron-userland/electron-packager)) so if you want to distribute this client to
