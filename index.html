@@ -50,7 +50,9 @@
   <body>
     <neuro-app></neuro-app>
     <script>
-      require('./renderer.js')
+      if (require) {
+        require('./renderer.js')
+      }
     </script>
   </body>
 </html>

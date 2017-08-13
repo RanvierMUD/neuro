@@ -25,6 +25,11 @@ bower install
 npm run start
 ```
 
+## Creating Releases
+
+To create distributables for Neuro simply run `npm run package-<platform>` where platform is one of `linux`, `win`, or
+`mac`. Note for Mac there may be some extra signing process but I'm not sure since I've never used it, caveat emptor.
+
 ## Features
 
 Neuro is a minimal client created in the same spirit as Ranvier: unopinionated but with sane examples for you to build
