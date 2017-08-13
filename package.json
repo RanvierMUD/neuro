@@ -1,21 +1,19 @@
 {
-  "name": "electron-quick-start",
+  "name": "neuro",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "MUD Client for Ranvier using websockets",
   "main": "main.js",
+  "repository": "https://github.com/shawncplus/neuro",
+  "keywords": [
+    "mud",
+    "game",
+    "client"
+  ],
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Shawn Biddle <shawncplus@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "electron": "~1.6.2"
   }
