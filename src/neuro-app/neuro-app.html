@@ -114,7 +114,7 @@
       #optionsMenu {
         position: absolute;
         height: 200px;
-        width: 300px;
+        width: 384px;
         top: calc(50% - 100px);
         left: calc(50% - 150px);
       }
@@ -200,6 +200,7 @@
               return {
                 fontSize: 14,
                 showEffects: true,
+                selectLastCommand: false,
               };
             },
           },
@@ -217,9 +218,19 @@
       }
 
       ready() {
-        this.ansi_up = new AnsiUp;
         super.ready();
-        this.$.input.focus();
+        this.ansi_up = new AnsiUp;
+        this._history = [];
+        this._historyIndex = 0;
+        if (require) {
+          var Store = require('electron-store');
+          this.store = new Store;
+          this.options = this.store.get('options', {
+            fontSize: 14,
+            showEffects: true,
+            selectLastCommand: false,
+          });
+        }
       }
 
       connect() {
@@ -301,7 +312,29 @@
           }
 
           this.websocket.send(message);
-          this.input = '';
+          this._history.push(message);
+          if (this.options.selectLastCommand) {
+            this.$.input.select();
+          } else {
+            this.input = '';
+          }
+          this._historyIndex = this._history.length;
+          return;
+        }
+
+        if (e.key === 'ArrowUp') {
+          if (this._history[this._historyIndex - 1]) {
+            this.$.input.value = this._history[--this._historyIndex];
+          }
+        }
+
+        if (e.key === 'ArrowDown') {
+          if (this._history[this._historyIndex + 1]) {
+            this.$.input.value = this._history[++this._historyIndex];
+          } else {
+            this._historyIndex = this._history.length;
+            this.$.input.value = '';
+          }
         }
       }
 
@@ -329,6 +362,10 @@
         this._optionsOpen = false;
         var fontSize = parseInt(this.options.fontSize, 10);
         this.$.output.style.fontSize = (isNaN(fontSize) ? 14 : fontSize) + 'px';
+
+        if (this.store) {
+          this.store.set('options', this.options);
+        }
       }
     }
 
