@@ -3,6 +3,7 @@
 
 <link rel="import" href="player-display.html">
 <link rel="import" href="target-display.html">
+<link rel="import" href="effect-display.html">
 
 <dom-module id="neuro-app">
   <template>
@@ -120,13 +121,21 @@
         width: 100%;
         pointer-events: none;
       }
+      #effects {
+        position: absolute;
+        top: 64px;
+        right: 24px;
+      }
+      #effects[hidden] {
+        display: none !important;
+      }
     </style>
     <div id="toolbar">
       <img class="logo" src="./assets/logo.png">
 
       <div class="control">
         <label for="hostname">Hostname</label>
-        <input id="hostname" value="{{hostname::input}}">
+        <input id="hostname" value="{{hostname::input}}" tabindex="0">
       </div>
 
       <div class="control">
@@ -139,7 +148,8 @@
     <div id="output"></div>
     <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
     <player-display data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
-    <target-display id="targets" targets="[[playerData.targets]]" hidden$="[[!playerData]]"></taret-display>
+    <target-display id="targets" targets="[[playerData.targets]]" hidden$="[[!playerData]]"></target-display>
+    <effect-display id="effects" effects="[[playerData.effects]]" hidden$="[[!playerData]]" on-show-effects="_showEffects"></effect-display>
   </template>
 
   <script>
@@ -199,7 +209,7 @@
         // find links
         message = message.replace(
           /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
-          '<a href="http://$&" target="_blank">$&</a>'
+          '<a href="http://$&" target="_blank" tabindex="-1">$&</a>'
         );
         span.innerHTML = message;
 
@@ -249,6 +259,14 @@
           this.websocket.send(message);
           this.input = '';
         }
+      }
+
+      _showEffects() {
+        if (!this.websocket || this.websocket.readyState !== 1) {
+          return;
+        }
+
+        this.websocket.send('effects');
       }
     }
 
