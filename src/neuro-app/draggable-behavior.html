@@ -19,11 +19,14 @@
             var style = getComputedStyle(this);
             this._dragOffsetLeft = (parseInt(style.getPropertyValue("left"),10) - e.detail.x);
             this._dragOffsetTop = (parseInt(style.getPropertyValue("top"),10) - e.detail.y);
+            this._rect = this.getBoundingClientRect();
             break;
           case 'track':
             requestAnimationFrame(_ => {
-              this.style.left = (e.detail.x + this._dragOffsetLeft) + 'px';
-              this.style.top = (e.detail.y + this._dragOffsetTop) + 'px';
+              var x = Math.min(window.innerWidth - this._rect.width, Math.max(0, e.detail.x + this._dragOffsetLeft));
+              var y = Math.min(window.innerHeight - this._rect.height, Math.max(0, e.detail.y + this._dragOffsetTop));
+              this.style.left = x + 'px';
+              this.style.top = y + 'px';
             });
             break;
         }
