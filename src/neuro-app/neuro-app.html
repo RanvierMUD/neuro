@@ -1,13 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
 
+<link rel="import" href="shared-styles.html">
 <link rel="import" href="player-display.html">
 <link rel="import" href="target-display.html">
 <link rel="import" href="effect-display.html">
+<link rel="import" href="options-menu.html">
 
 <dom-module id="neuro-app">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         display: block;
         background-color: #000;
@@ -16,21 +18,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        box-sizing: border-box;
-
-        --ranvier-green: #689F63;
       }
-
-      *, *::before, *::after {
-        box-sizing: inherit;
-      }
-
-      input {
-        border: 0;
-        box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
-        padding: 4px;
-      }
-
       #toolbar {
         height: 48px;
         background-color: #666;
@@ -43,13 +31,11 @@
       #toolbar[connected] {
         height: 0;
       }
-
       .logo {
         height: 36px;
         width: 36px;
         margin-left: 12px;
       }
-
       .control {
         margin-left: 24px;
       }
@@ -57,33 +43,25 @@
       .control label {
         margin-right: 8px;
       }
-
-      .ranvier-btn {
-        background-color: var(--ranvier-green);
-        border: 1px solid rgb(167, 202, 164);
-        border-radius: 8px;
-        box-shadow: 2px 2px 4px #333;
-        color: #fff;
-        cursor: pointer;
-        font-weight: bold;
+      .connect {
         margin: 0 24px;
-        padding: 8px 12px;
       }
-      #toolbar[connected] .ranvier-btn {
+      #toolbar[connected] .connect {
         position: fixed;
-        right: 0px;
+        right: 40px;
         top: 8px;
       }
-      .ranvier-btn:hover {
-        background-color: #598a54;
+      .options {
+        margin-right: 24px;
+        cursor: pointer;
+        font-size: 24px;
+        text-shadow: 0 0 2px #000;
       }
-      .ranvier-btn:active {
-        background-color: #4b7346;
+      #toolbar[connected] .options {
+        position: fixed;
+        right: 0px;
+        top: 10px;
       }
-      .ranvier-btn:focus {
-        outline: none;
-      }
-
       #output {
         flex: 1;
         font-family: 'Roboto Mono', monospace;
@@ -133,6 +111,16 @@
       #effects[hidden] {
         display: none !important;
       }
+      #optionsMenu {
+        position: absolute;
+        height: 200px;
+        width: 300px;
+        top: calc(50% - 100px);
+        left: calc(50% - 150px);
+      }
+      #optionsMenu[hidden] {
+        display: none !important;
+      }
     </style>
     <div id="toolbar" connected$="[[_isConnected]]">
       <img class="logo" src="./assets/logo.png">
@@ -147,14 +135,33 @@
         <input id="port" value="{{port::input}}">
       </div>
 
-      <button class="ranvier-btn" on-tap="connect" hidden$="[[_isConnected]]">Connect</button>
-      <button class="ranvier-btn" on-tap="disconnect" hidden$="[[!_isConnected]]">Disconnect</button>
+      <button class="ranvier-btn connect" on-tap="connect" hidden$="[[_isConnected]]">Connect</button>
+      <button class="ranvier-btn connect" on-tap="disconnect" hidden$="[[!_isConnected]]">Disconnect</button>
+      <span class="options" title="Options" on-tap="_openOptions">&#x2699;</span>
     </div>
+
     <div id="output"></div>
+
     <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
+
     <player-display data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
+
     <target-display id="targets" targets="[[playerData.targets]]" hidden$="[[!playerData]]"></target-display>
-    <effect-display id="effects" effects="[[playerData.effects]]" on-show-effects="_showEffects"></effect-display>
+
+    <effect-display
+      id="effects"
+      hidden$="[[_effectsVisible(playerData, options.showEffects)]]"
+      effects="[[playerData.effects]]"
+      on-show-effects="_effectsCommand"
+    ></effect-display>
+
+    <options-menu
+      id="optionsMenu"
+      options="{{options}}"
+      hidden$="[[!_optionsOpen]]"
+      on-save="_optionsSaved"
+      on-close="_closeOptions"
+    ></options-menu>
   </template>
 
   <script>
@@ -184,6 +191,22 @@
           playerData: {
             type: Object,
             value: null,
+          },
+
+          options: {
+            type: Object,
+            notify: true,
+            value: function () {
+              return {
+                fontSize: 14,
+                showEffects: true,
+              };
+            },
+          },
+
+          _optionsOpen: {
+            type: Boolean,
+            value: false,
           },
 
           _isConnected: {
@@ -282,12 +305,30 @@
         }
       }
 
-      _showEffects() {
+      _effectsVisible() {
+        return !this.options || !this.options.showEffects || !this.playerData;
+      }
+
+      _effectsCommand() {
         if (!this.websocket || this.websocket.readyState !== 1) {
           return;
         }
 
         this.websocket.send('effects');
+      }
+
+      _openOptions() {
+        this._optionsOpen = true;
+      }
+
+      _closeOptions() {
+        this._optionsOpen = false;
+      }
+
+      _optionsSaved() {
+        this._optionsOpen = false;
+        var fontSize = parseInt(this.options.fontSize, 10);
+        this.$.output.style.fontSize = (isNaN(fontSize) ? 14 : fontSize) + 'px';
       }
     }
 

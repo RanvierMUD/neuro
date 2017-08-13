@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="options-menu">
+  <template>
+    <style include="shared-styles">
+    :host {
+      border-radius: 24px;
+      border: 2px solid #666;
+      padding: 12px;
+      background-color: #333;
+      display: flex;
+      flex-direction: column;
+    }
+    .buttons, .toolbar {
+      display: flex;
+      flex-direction: row;
+      padding: 0 12px;
+    }
+    .toolbar {
+      font-size: 24px;
+      color: #fff;
+    }
+    .toolbar__title  {
+      flex: 1;
+    }
+    .form {
+      padding: 12px;
+      flex: 1;
+    }
+    .control {
+      margin-bottom: 12px;
+      color: #fff;
+      display: flex;
+    }
+    .control:last-child {
+      margin-bottom: 0;
+    }
+    .control label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 16px;
+      flex: 1;
+    }
+    .control input {
+      flex: 1;
+    }
+    .close {
+      cursor: pointer;
+    }
+    .buttons {
+      justify-content: flex-end;
+    }
+    </style>
+    <div class="toolbar">
+      <span class="toolbar__title">Options</span>
+      <span class="close" on-tap="close">&times;</span>
+    </div>
+    <div class="form">
+      <div class="control">
+        <label>Font Size</label>
+        <input type="number" min="8" max="40" value="{{options.fontSize::input}}">
+      </div>
+
+      <div class="control">
+        <label>Show Effects</label>
+        <input type="checkbox" checked="{{options.showEffects::change}}">
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="ranvier-btn" on-tap="save">Save</button>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class OptionsMenu extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'options-menu'; }
+      static get properties() {
+        return {
+          options: {
+            type: Object,
+          },
+        };
+      }
+
+      save() {
+        this.dispatchEvent(new CustomEvent('save'));
+      }
+
+      close() {
+        this.dispatchEvent(new CustomEvent('close'));
+      }
+    }
+
+    window.customElements.define(OptionsMenu.is, OptionsMenu);
+  </script>
+</dom-module>
+
