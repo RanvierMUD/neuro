@@ -1,6 +1,6 @@
 {
   "name": "neuro",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MUD Client for Ranvier using websockets",
   "main": "main.js",
   "repository": "https://github.com/shawncplus/neuro",
