@@ -24,3 +24,11 @@ npm install
 bower install
 npm run start
 ```
+
+## Features
+
+Neuro is a minimal client created in the same spirit as Ranvier: unopinionated but with sane examples for you to build
+from without tearing your hair out. Out of the box it has a main player display for health and energy as well as a
+collapsible list of currently active player effects.
+
+<p align="center"><img width="640" src="https://zippy.gfycat.com/CriminalPiercingBettong.gif"></p>
