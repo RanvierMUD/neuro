@@ -2,7 +2,7 @@
 
 Neuro is a simple and easily-extensible websocket client to use with the [Ranvier](https://ranviermud.com) MUD game engine.
 
-<p align="center"><img width="640" src="https://raw.githubusercontent.com/shawncplus/neuro/master/assets/screenshot.png"></p>
+<p align="center"><img width="640" src="https://raw.githubusercontent.com/shawncplus/neuro/master/assets/demo.gif"></p>
 
 It currently does not ship with any distribution strategy (e.g.,
 [electron-packager](https://github.com/electron-userland/electron-packager)) so if you want to distribute this client to
@@ -33,7 +33,11 @@ To create distributables for Neuro simply run `npm run package-<platform>` where
 ## Features
 
 Neuro is a minimal client created in the same spirit as Ranvier: unopinionated but with sane examples for you to build
-from without tearing your hair out. Out of the box it has a main player display for health and energy as well as a
-collapsible list of currently active player effects.
+from without tearing your hair out. Out of the box it has the following features:
 
-<p align="center"><img width="640" src="https://zippy.gfycat.com/CriminalPiercingBettong.gif"></p>
+* Player HUD for health/mana/etc.
+* Active effect list
+* Persistent options for font size/select last command
+* Target health frames with support for multiple targets
+* Command history
+* Auto-linking urls
