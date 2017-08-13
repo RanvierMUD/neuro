@@ -149,7 +149,7 @@
     <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
     <player-display data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
     <target-display id="targets" targets="[[playerData.targets]]" hidden$="[[!playerData]]"></target-display>
-    <effect-display id="effects" effects="[[playerData.effects]]" hidden$="[[!playerData]]" on-show-effects="_showEffects"></effect-display>
+    <effect-display id="effects" effects="[[playerData.effects]]" on-show-effects="_showEffects"></effect-display>
   </template>
 
   <script>

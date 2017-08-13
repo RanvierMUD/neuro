@@ -1,0 +1,35 @@
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<script>
+(function() {
+  'use strict';
+
+  window.Neuro = window.Neuro || {};
+
+  Neuro.DraggableBehavior = Polymer.dedupingMixin(superClass => {
+    return Polymer.GestureEventListeners(class extends superClass {
+      ready() {
+        super.ready();
+        Polymer.Gestures.addListener(this, 'track', e => this._handleTrack(e));
+      }
+
+      _handleTrack(e) {
+        switch (e.detail.state) {
+          case 'start':
+            var style = getComputedStyle(this);
+            this._dragOffsetLeft = (parseInt(style.getPropertyValue("left"),10) - e.detail.x);
+            this._dragOffsetTop = (parseInt(style.getPropertyValue("top"),10) - e.detail.y);
+            break;
+          case 'track':
+            requestAnimationFrame(_ => {
+              this.style.left = (e.detail.x + this._dragOffsetLeft) + 'px';
+              this.style.top = (e.detail.y + this._dragOffsetTop) + 'px';
+            });
+            break;
+        }
+      }
+
+    });
+  });
+})();
+</script>

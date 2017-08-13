@@ -11,14 +11,26 @@
         background-color: #333;
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
         align-items: center;
       }
 
+      neuro-statbar {
+        margin: 0 auto;
+      }
       .energy {
         --statbar-current-bg1: #FBC02D;
         --statbar-current-bg2: #fa0;
         --statbar-current-bg3: #f90;
+      }
+      .favor {
+        --statbar-current-bg1: #fff59d;
+        --statbar-current-bg2: #fff9c4;
+        --statbar-current-bg3: #ffecb3;
+      }
+      .mana {
+        --statbar-current-bg1: #0288d1;
+        --statbar-current-bg2: #0097a7;
+        --statbar-current-bg3: #009688;
       }
     </style>
     <template is="dom-if" if="[[data.attributes.health]]">
@@ -27,6 +39,14 @@
 
     <template is="dom-if" if="[[data.attributes.energy]]">
       <neuro-statbar class="energy" current-value="[[data.attributes.energy.current]]" max-value="[[data.attributes.energy.max]]"></neuro-statbar>
+    </template>
+
+    <template is="dom-if" if="[[data.attributes.favor]]">
+      <neuro-statbar class="favor" current-value="[[data.attributes.favor.current]]" max-value="[[data.attributes.favor.max]]"></neuro-statbar>
+    </template>
+
+    <template is="dom-if" if="[[data.attributes.mana]]">
+      <neuro-statbar class="mana" current-value="[[data.attributes.mana.current]]" max-value="[[data.attributes.mana.max]]"></neuro-statbar>
     </template>
   </template>
 
