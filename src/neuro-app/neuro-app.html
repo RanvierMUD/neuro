@@ -7,6 +7,7 @@
 <link rel="import" href="effect-display.html">
 <link rel="import" href="quest-display.html">
 <link rel="import" href="options-menu.html">
+<link rel="import" href="system-menu.html">
 
 <dom-module id="neuro-app">
   <template>
@@ -132,6 +133,14 @@
       #optionsMenu[hidden] {
         display: none !important;
       }
+      .bottom-toolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .player-display {
+        flex: 1;
+      }
     </style>
     <div id="toolbar" connected$="[[_isConnected]]">
       <img class="logo" src="./assets/logo.png">
@@ -155,20 +164,27 @@
 
     <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
 
-    <player-display data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
+    <div class="bottom-toolbar">
+      <player-display class="player-display" data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
+      <system-menu
+        class="system-menu"
+        on-toggle-quests="_toggleQuests"
+        on-toggle-effects="_toggleEffects"
+      ></system-menu>
+    </div>
 
     <target-display id="targets" targets="[[playerData.targets]]" hidden$="[[!playerData]]"></target-display>
 
     <effect-display
       id="effects"
-      hidden$="[[_effectsVisible(playerData)]]"
+      hidden$="[[!_effectsVisible(playerData, _effectsOpen)]]"
       effects="[[playerData.effects]]"
       on-show-effects="_effectsCommand"
     ></effect-display>
 
     <quest-display
       id="quests"
-      hidden$="[[_questsVisible(playerData)]]"
+      hidden$="[[!_questsVisible(playerData, _questsOpen)]]"
       quests="[[playerData.quests]]"
       on-show-quests="_questsCommand"
     ></quest-display>
@@ -225,6 +241,16 @@
           _optionsOpen: {
             type: Boolean,
             value: false,
+          },
+
+          _effectsOpen: {
+            type: Boolean,
+            value: true,
+          },
+
+          _questsOpen: {
+            type: Boolean,
+            value: true,
           },
 
           _isConnected: {
@@ -355,7 +381,7 @@
       }
 
       _effectsVisible() {
-        return !this.playerData;
+        return this.playerData && this._effectsOpen;
       }
 
       _effectsCommand() {
@@ -367,7 +393,7 @@
       }
 
       _questsVisible() {
-        return !this.playerData;
+        return this.playerData && this._questsOpen;
       }
 
       _questsCommand() {
@@ -394,6 +420,14 @@
         if (this.store) {
           this.store.set('options', this.options);
         }
+      }
+
+      _toggleEffects() {
+        this._effectsOpen = !this._effectsOpen;
+      }
+
+      _toggleQuests() {
+        this._questsOpen = !this._questsOpen;
       }
     }
 

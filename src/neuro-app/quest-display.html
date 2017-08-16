@@ -53,6 +53,9 @@
         border-bottom: 1px solid var(--quest-color);
         padding-left: 4px;
       }
+      .quest__name.empty {
+        border-bottom: none;
+      }
       .quest__progress {
         height: 4px;
         margin-bottom: 8px;
@@ -70,7 +73,7 @@
     </h4>
     <div class="quests" hidden$="[[_toggled]]">
       <div class="quest" hidden$="[[_hasQuests]]">
-        <div class="quest__name">No active quests</div>
+        <div class="quest__name empty">No active quests</div>
       </div>
       <template is="dom-repeat" items="[[formattedQuests]]" as="quest">
         <div class="quest" title$="[[quest.data.config.title]]" on-click="_showQuests">
