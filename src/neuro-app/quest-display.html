@@ -1,0 +1,150 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<link rel="import" href="neuro-statbar.html">
+<link rel="import" href="draggable-behavior.html">
+
+<dom-module id="quest-display">
+  <template>
+    <style>
+      :host {
+        border: 2px solid #a7caa4;
+        border-radius: 12px;
+        cursor: pointer;
+        display: block;
+        overflow: hidden;
+        width: 320px;
+        user-select: none;
+
+        --quest-color: #fbc02d;
+      }
+
+      .title {
+        font-size: 16px;
+        text-align: center;
+        font-weight: normal;
+        color: #fff;
+        background-color: var(--ranvier-green);
+        margin: 0;
+        padding: 8px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .title__text {
+        flex: 1;
+      }
+      .quests {
+        overflow-y: auto;
+      }
+      .quest {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 12px;
+        background-color: #333;
+      }
+      .quest:last-of-type {
+        border-bottom: none;
+      }
+      .quest__name {
+        font-size: 16px;
+        color: var(--quest-color);
+        font-weight: bold;
+        border-bottom: 1px solid var(--quest-color);
+        padding-left: 4px;
+      }
+      .quest__progress {
+        height: 4px;
+        margin-bottom: 8px;
+        background: linear-gradient(90deg, var(--quest-color), #ff8f00);
+      }
+      .quest__goals {
+        padding-left: 12px;
+        color: var(--quest-color);
+      }
+    </style>
+    <h4 class="title" on-click="_toggleList">
+      <span class="title__text">Quests</span>
+      <span class="toggle" hidden$="[[_toggled]]">▲</span>
+      <span class="toggle" hidden$="[[!_toggled]]">▼</span>
+    </h4>
+    <div class="quests" hidden$="[[_toggled]]">
+      <div class="quest" hidden$="[[_hasQuests]]">
+        <div class="quest__name">No active quests</div>
+      </div>
+      <template is="dom-repeat" items="[[formattedQuests]]" as="quest">
+        <div class="quest" title$="[[quest.data.config.title]]" on-click="_showQuests">
+          <div class="quest__name">[[quest.data.config.title]]</div>
+          <div class="quest__progress" style="width: [[quest.data.progress.percent]]%;"></div>
+          <div class="quest__goals">
+            <template is="dom-repeat" items="[[quest.data.state]]" as="goal">
+              <div class="quest__goal">
+                [[goal.progress.display]]
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QuestDisplay extends Neuro.DraggableBehavior(Polymer.Element) {
+      static get is() { return 'quest-display'; }
+      static get properties() {
+        return {
+          quests: {
+            type: Array,
+            value: function () {
+              return [];
+            },
+          },
+
+          formattedQuests: {
+            type: Array,
+            computed: '_computeFormattedQuests(quests)',
+          },
+
+          _hasQuests: {
+            type: Boolean,
+            computed: '_computeHasQuests(quests.*)',
+          },
+
+          _toggled: {
+            type: Boolean,
+            value: false,
+          },
+        };
+      }
+
+      _toggleList() {
+        this._toggled = !this._toggled;
+      }
+
+      _computeFormattedQuests() {
+        if (!this.quests) {
+          return [];
+        }
+
+        return this.quests.map(quest => ({ entityReference: quest[0], data: quest[1] }));
+      }
+
+      _computeHasQuests() {
+        if (!this.quests) {
+          return false;
+        }
+        return this.quests.length > 0;
+      }
+
+      _showQuests(e) {
+        this.dispatchEvent(new CustomEvent('show-quests'));
+      }
+    }
+
+    window.customElements.define(QuestDisplay.is, QuestDisplay);
+  </script>
+</dom-module>

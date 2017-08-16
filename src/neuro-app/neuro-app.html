@@ -5,6 +5,7 @@
 <link rel="import" href="player-display.html">
 <link rel="import" href="target-display.html">
 <link rel="import" href="effect-display.html">
+<link rel="import" href="quest-display.html">
 <link rel="import" href="options-menu.html">
 
 <dom-module id="neuro-app">
@@ -107,8 +108,18 @@
         position: absolute;
         top: 64px;
         right: 24px;
+        max-height: 256px;
       }
       #effects[hidden] {
+        display: none !important;
+      }
+      #quests {
+        position: absolute;
+        top: 280px;
+        right: 24px;
+        max-height: 256px;
+      }
+      #quests[hidden] {
         display: none !important;
       }
       #optionsMenu {
@@ -150,10 +161,17 @@
 
     <effect-display
       id="effects"
-      hidden$="[[_effectsVisible(playerData, options.showEffects)]]"
+      hidden$="[[_effectsVisible(playerData)]]"
       effects="[[playerData.effects]]"
       on-show-effects="_effectsCommand"
     ></effect-display>
+
+    <quest-display
+      id="quests"
+      hidden$="[[_questsVisible(playerData)]]"
+      quests="[[playerData.quests]]"
+      on-show-quests="_questsCommand"
+    ></quest-display>
 
     <options-menu
       id="optionsMenu"
@@ -199,7 +217,6 @@
             value: function () {
               return {
                 fontSize: 14,
-                showEffects: true,
                 selectLastCommand: false,
               };
             },
@@ -227,7 +244,6 @@
           this.store = new Store;
           this.options = this.store.get('options', {
             fontSize: 14,
-            showEffects: true,
             selectLastCommand: false,
           });
         }
@@ -339,7 +355,7 @@
       }
 
       _effectsVisible() {
-        return !this.options || !this.options.showEffects || !this.playerData;
+        return !this.playerData;
       }
 
       _effectsCommand() {
@@ -348,6 +364,18 @@
         }
 
         this.websocket.send('effects');
+      }
+
+      _questsVisible() {
+        return !this.playerData;
+      }
+
+      _questsCommand() {
+        if (!this.websocket || this.websocket.readyState !== 1) {
+          return;
+        }
+
+        this.websocket.send('quest log');
       }
 
       _openOptions() {
