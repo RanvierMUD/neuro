@@ -340,16 +340,16 @@
 
         if (e.key === 'ArrowUp') {
           if (this._history[this._historyIndex - 1]) {
-            this.$.input.value = this._history[--this._historyIndex];
+            this.input = this._history[--this._historyIndex];
           }
         }
 
         if (e.key === 'ArrowDown') {
           if (this._history[this._historyIndex + 1]) {
-            this.$.input.value = this._history[++this._historyIndex];
+            this.input = this._history[++this._historyIndex];
           } else {
             this._historyIndex = this._history.length;
-            this.$.input.value = '';
+            this.input = '';
           }
         }
       }
