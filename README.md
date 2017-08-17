@@ -33,8 +33,10 @@ from without tearing your hair out. Out of the box it has the following features
 
 * Player HUD for health/mana/etc.
 * Active effect list
+* Quest list
 * Persistent options for font size/select last command
 * Target health frames with support for multiple targets
 * Command history
+* System menu bar for hiding/showing quests and effects
 * Draggable windows (Just add `Neuro.DraggableBehavior` to any element)
 * Auto-linking urls
