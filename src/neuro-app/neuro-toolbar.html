@@ -39,17 +39,12 @@
       }
       .control label {
         margin-right: 8px;
-      }
-      .control-port {
-        flex: 1;
+        font-size: 20px;
       }
       .connect {
-        margin-right: 12px;
+        margin-left: 12px;
         width: 32px;
         height: 32px;
-      }
-      .connect > * {
-        font-size: 20px;
       }
       :host([connected]) .connect {
         position: fixed;
@@ -63,10 +58,11 @@
         cursor: pointer;
         font-size: 24px;
         text-shadow: 0 0 2px #000;
-        position: relative;
-        left: 12px;
+        position: absolute;
+        right: -12px;
         padding: 6px;
         background-color: #666;
+        user-select: none;
       }
       :host([connected]) .options {
         position: fixed;
@@ -92,7 +88,7 @@
     <neuro-btn class="connect" title="Connect" on-tap="connect" hidden$="[[connected]]">play_arrow</neuro-btn>
     <neuro-btn class="connect" title="Disconnect" on-tap="disconnect" hidden$="[[!connected]]">stop</neuro-btn>
 
-    <div class="options" on-tap-"show-settings"><i class="material-icons">settings</i></div>
+    <div class="options" on-tap="showSettings"><i class="material-icons">settings</i></div>
   </template>
   <script>
   /**

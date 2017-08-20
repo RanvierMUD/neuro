@@ -1,0 +1,88 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="draggable-behavior.html">
+
+<dom-module id="neuro-window">
+  <template>
+    <style>
+      .title {
+        font-size: 18px;
+        font-weight: normal;
+        color: #fff;
+        background-color: #222;
+        border: 1px solid #a7caa4;
+        margin: 0;
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        transform: skew(-20deg);
+        position: relative;
+        left: -10px;
+        top: 1px;
+        z-index: 1;
+        @apply --neuro-window-title;
+      }
+      :host([toggled]) .title {
+        top: 0;
+      }
+      .title__text {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: 2px solid #a7caa4;
+        font-weight: bold;
+        height: 100%;
+        left: 8px;
+        position: relative;
+        @apply --neuro-window-title-text;
+      }
+      .title__toggle {
+        padding-right: 12px;
+        @apply --neuro-window-toggle;
+      }
+      .title__toggle, .title__text {
+        transform: skew(20deg);
+      }
+      .list {
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-left: 1px solid var(--neuro-window-border-color, #e0e0e0);
+      }
+    </style>
+    <h4 class="title" on-click="_toggle">
+      <span class="title__text"><slot name="title"></slot></span>
+      <span class="title__toggle" hidden$="[[toggled]]">▲</span>
+      <span class="title__toggle" hidden$="[[!toggled]]">▼</span>
+    </h4>
+    <div class="list" hidden$="[[toggled]]">
+      <slot></slot>
+    </div>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class NeuroWindow extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'neuro-window'; }
+      static get properties() {
+        return {
+          toggled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
+        };
+      }
+
+      _toggle() {
+        this.toggled = !this.toggled;
+      }
+    }
+
+    window.customElements.define(NeuroWindow.is, NeuroWindow);
+  </script>
+</dom-module>

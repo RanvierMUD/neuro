@@ -2,14 +2,14 @@
 <link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
 
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="neuro-btn.html">
 
 <dom-module id="options-menu">
   <template>
     <style include="shared-styles">
     :host {
-      border-radius: 24px;
       border: 2px solid #666;
-      padding: 12px;
+      padding: 4px;
       background-color: #333;
       display: flex;
       flex-direction: column;
@@ -17,11 +17,11 @@
     .buttons, .toolbar {
       display: flex;
       flex-direction: row;
-      padding: 0 12px;
     }
     .toolbar {
       font-size: 24px;
       color: #fff;
+      padding: 0 4px;
     }
     .toolbar__title  {
       flex: 1;
@@ -49,14 +49,21 @@
     }
     .close {
       cursor: pointer;
+      font-size: 40px;
+      line-height: 24px;
     }
     .buttons {
+      padding: 4px;
       justify-content: flex-end;
+    }
+    .save {
+      width: 32px;
+      height: 32px;
     }
     </style>
     <div class="toolbar">
       <span class="toolbar__title">Options</span>
-      <span class="close" on-tap="close">&times;</span>
+      <span class="close" title="Close" on-tap="close">&times;</span>
     </div>
     <div class="form">
       <div class="control">
@@ -70,7 +77,7 @@
       </div>
     </div>
     <div class="buttons">
-      <button class="ranvier-btn" on-tap="save">Save</button>
+      <neuro-btn class="save" on-tap="save">save</neuro-btn>
     </div>
   </template>
 

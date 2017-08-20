@@ -1,15 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <link rel="import" href="neuro-statbar.html">
+<link rel="import" href="neuro-window.html">
 <link rel="import" href="draggable-behavior.html">
 
 <dom-module id="quest-display">
   <template>
     <style>
       :host {
-        border: 2px solid #a7caa4;
-        border-radius: 12px;
         cursor: pointer;
         display: block;
         overflow: hidden;
@@ -19,67 +19,69 @@
         --quest-color: #fbc02d;
       }
 
-      .title {
-        font-size: 16px;
-        text-align: center;
-        font-weight: normal;
-        color: #fff;
-        background-color: var(--ranvier-green);
-        margin: 0;
-        padding: 8px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-      }
-      .title__text {
-        flex: 1;
-      }
-      .quests {
-        overflow-y: auto;
+      .window {
+        --neuro-window-border-color: var(--quest-color);
       }
       .quest {
-        border-bottom: 1px solid #e0e0e0;
-        padding: 12px;
-        background-color: #333;
+        position: relative;
       }
-      .quest:last-of-type {
-        border-bottom: none;
+      .quest + .quest {
+        top: -1px;
       }
       .quest__name {
-        font-size: 16px;
+        background-color: #333;
+        border-left-width: 0;
+        border: 1px solid var(--quest-color);
         color: var(--quest-color);
+        font-size: 16px;
         font-weight: bold;
-        border-bottom: 1px solid var(--quest-color);
-        padding-left: 4px;
+        left: -8px;
+        padding: 4px 12px;
+        position: relative;
+        transform: skew(-20deg);
+      }
+      .quest__name__text {
+        transform: skew(20deg);
       }
       .quest__name.empty {
         border-bottom: none;
       }
       .quest__progress {
         height: 4px;
-        margin-bottom: 8px;
         transition: width 500ms ease;
         background: linear-gradient(90deg, var(--quest-color), #ff8f00);
+        position: absolute;
+        bottom: 0;
+        left: 12px;
       }
       .quest__goals {
         padding-left: 12px;
         color: var(--quest-color);
+        border-bottom: 1px solid var(--quest-color);
+        border-right: 1px solid var(--quest-color);
+        width: calc(100% - 27px);
+        background-color: #222;
+      }
+      .quest__goal, .quest__name__text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     </style>
-    <h4 class="title" on-click="_toggleList">
-      <span class="title__text">Quests</span>
-      <span class="toggle" hidden$="[[_toggled]]">▲</span>
-      <span class="toggle" hidden$="[[!_toggled]]">▼</span>
-    </h4>
-    <div class="quests" hidden$="[[_toggled]]">
-      <div class="quest" hidden$="[[_hasQuests]]">
-        <div class="quest__name empty">No active quests</div>
-      </div>
+    <neuro-window class="window">
+      <span slot="title">Quests</span>
+
+      <template is="dom-if" if="[[!_hasQuests]]" restamp>
+        <div class="quest">
+          <div class="quest__name empty">No active quests</div>
+        </div>
+      </template>
       <template is="dom-repeat" items="[[formattedQuests]]" as="quest">
         <div class="quest" title$="[[quest.data.config.title]]" on-click="_showQuests">
-          <div class="quest__name">[[quest.data.config.title]]</div>
-          <div class="quest__progress" style="width: [[quest.data.progress.percent]]%;"></div>
+          <div class="quest__name">
+            <div class="quest__name__text">[[quest.data.config.title]]</div>
+            <div class="quest__progress" style="width: [[quest.data.progress.percent]]%;"></div>
+          </div>
           <div class="quest__goals">
             <template is="dom-repeat" items="[[quest.data.state]]" as="goal">
               <div class="quest__goal">
@@ -89,7 +91,6 @@
           </div>
         </div>
       </template>
-    </div>
   </template>
 
   <script>
@@ -134,7 +135,10 @@
           return [];
         }
 
-        return this.quests.map(quest => ({ entityReference: quest[0], data: quest[1] }));
+        return this.quests.map(quest => {
+          quest[1].progress.percent = 30;
+          return ({ entityReference: quest[0], data: quest[1] })
+        });
       }
 
       _computeHasQuests() {
