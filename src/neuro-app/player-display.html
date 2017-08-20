@@ -12,11 +12,16 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding-left: 12px;
       }
 
       neuro-statbar {
         margin: 0 auto;
+        width: 320px;
+      }
+      .label {
+        color: #fff;
+        font-weight: bold;
+        margin: 0 8px 0 20px;
       }
       .energy {
         --statbar-current-bg1: #FBC02D;
@@ -35,18 +40,22 @@
       }
     </style>
     <template is="dom-if" if="[[data.attributes.health]]">
+      <div class="label">Health</div>
       <neuro-statbar class="hp" current-value="[[data.attributes.health.current]]" max-value="[[data.attributes.health.max]]"></neuro-statbar>
     </template>
 
     <template is="dom-if" if="[[data.attributes.energy]]">
+      <div class="label">Energy</div>
       <neuro-statbar class="energy" current-value="[[data.attributes.energy.current]]" max-value="[[data.attributes.energy.max]]"></neuro-statbar>
     </template>
 
     <template is="dom-if" if="[[data.attributes.favor]]">
+      <div class="label">Favor</div>
       <neuro-statbar class="favor" current-value="[[data.attributes.favor.current]]" max-value="[[data.attributes.favor.max]]"></neuro-statbar>
     </template>
 
     <template is="dom-if" if="[[data.attributes.mana]]">
+      <div class="label">Mana</div>
       <neuro-statbar class="mana" current-value="[[data.attributes.mana.current]]" max-value="[[data.attributes.mana.max]]"></neuro-statbar>
     </template>
   </template>
