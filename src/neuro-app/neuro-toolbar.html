@@ -1,0 +1,138 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="neuro-btn.html">
+
+<dom-module id="neuro-toolbar">
+  <template>
+    <style include="shared-styles">
+      :host {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        display: flex;
+        height: 48px;
+        align-items: center;
+        width: calc(100vw - 24px);
+      }
+      :host([connected]) {
+        background-color: transparent;
+      }
+      .logo {
+        background-color: rgba(105, 160, 100, 0.2);
+        padding: 6px 12px 6px 20px;
+        position: relative;
+        left: -6px;
+        transform: skew(-15deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+      }
+      .logo__img {
+        height: 36px;
+        width: 36px;
+        transform: skew(15deg);
+      }
+      .control {
+        margin-left: 24px;
+      }
+      .control label {
+        margin-right: 8px;
+      }
+      .control-port {
+        flex: 1;
+      }
+      .connect {
+        margin-right: 12px;
+        width: 32px;
+        height: 32px;
+      }
+      .connect > * {
+        font-size: 20px;
+      }
+      :host([connected]) .connect {
+        position: fixed;
+        right: 60px;
+        top: 4px;
+      }
+      .options {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 24px;
+        text-shadow: 0 0 2px #000;
+        position: relative;
+        left: 12px;
+        padding: 6px;
+        background-color: #666;
+      }
+      :host([connected]) .options {
+        position: fixed;
+        left: initial;
+        right: 12px;
+        top: 6px;
+      }
+    </style>
+    <div class="logo" hidden$="[[connected]]">
+      <img class="logo__img" src="./assets/logo.png">
+    </div>
+
+    <div class="control" hidden$="[[connected]]">
+      <label for="hostname">Hostname</label>
+      <input id="hostname" value="{{hostname::input}}" tabindex="0" type="text">
+    </div>
+
+    <div class="control control-port" hidden$="[[connected]]">
+      <label for="port">Port</label>
+      <input id="port" value="{{port::input}}" type="text">
+    </div>
+
+    <neuro-btn class="connect" on-tap="connect" hidden$="[[connected]]">play_arrow</neuro-btn>
+    <neuro-btn class="connect" on-tap="disconnect" hidden$="[[!connected]]">stop</neuro-btn>
+
+    <div class="options" on-tap-"show-settings"><i class="material-icons">settings</i></div>
+  </template>
+  <script>
+  /**
+   * @customElement
+   * @polymer
+   */
+  class NeuroToolbar extends Polymer.GestureEventListeners(Polymer.Element) {
+    static get is() { return 'neuro-toolbar'; }
+    static get properties() {
+      return {
+        connected: {
+          type: Boolean,
+          reflectToAttribute: true,
+        },
+
+        hostname: {
+          type: String,
+          notify: true
+        },
+
+        port: {
+          type: Number,
+          notify: true
+        },
+      };
+    }
+
+    connect() {
+      this.dispatchEvent(new CustomEvent('connect'));
+    }
+
+    disconnect() {
+      this.dispatchEvent(new CustomEvent('disconnect'));
+    }
+
+    showSettings() {
+      this.dispatchEvent(new CustomEvent('show-settings'));
+    }
+  }
+
+  window.customElements.define(NeuroToolbar.is, NeuroToolbar);
+  </script>
+</dom-module>

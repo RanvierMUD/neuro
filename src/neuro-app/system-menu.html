@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+
 <dom-module id="system-menu">
   <template>
     <style>
@@ -12,12 +13,14 @@
         align-items: center;
       }
       .menu-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        margin-right: 12px;
+        --neuro-btn-icon-size: 36px;
+        --neuro-btn-font-size: 28px;
+      }
+      /*
+      .menu-item {
         height: 40px;
         width: 40px;
-        font-weight: bold;
         background-color: #111;
         border: 2px solid #444;
         border-radius: 8px;
@@ -26,17 +29,16 @@
         cursor: pointer;
         font-size: 20px;
         margin-right: 12px;
-        text-shadow: inset 1px 1px #000;
         user-select: none;
       }
       .menu-item:active {
         box-shadow: -1px 0px 1px #222, 0px -1px 2px #222, 1px 0px 1px #222, 0px 1px 1px #222;
       }
+      */
     </style>
-    <div class="menu-item" title="Toggle Effects" on-click="_toggleEffects">⚝</div>
-    <div class="menu-item" title="Toggle Quests" on-click="_toggleQuests">❗</div>
+    <neuro-btn class="menu-item" title="Toggle Effects" on-click="_toggleEffects">timer</neuro-btn>
+    <neuro-btn class="menu-item" title="Toggle Quests" on-click="_toggleQuests">assignment_late</neuro-btn>
   </template>
-
   <script>
     /**
      * @customElement

@@ -7,6 +7,7 @@
 <link rel="import" href="effect-display.html">
 <link rel="import" href="quest-display.html">
 <link rel="import" href="options-menu.html">
+<link rel="import" href="neuro-toolbar.html">
 <link rel="import" href="system-menu.html">
 
 <dom-module id="neuro-app">
@@ -22,47 +23,7 @@
         flex-direction: column;
       }
       #toolbar {
-        height: 48px;
-        background-color: #666;
-        color: #fff;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-      #toolbar[connected] {
-        height: 0;
-      }
-      .logo {
-        height: 36px;
-        width: 36px;
-        margin-left: 12px;
-      }
-      .control {
-        margin-left: 24px;
-      }
-
-      .control label {
-        margin-right: 8px;
-      }
-      .connect {
-        margin: 0 24px;
-      }
-      #toolbar[connected] .connect {
         position: fixed;
-        right: 40px;
-        top: 8px;
-      }
-      .options {
-        margin-right: 24px;
-        cursor: pointer;
-        font-size: 24px;
-        text-shadow: 0 0 2px #000;
-      }
-      #toolbar[connected] .options {
-        position: fixed;
-        right: 0px;
-        top: 10px;
       }
       #output {
         flex: 1;
@@ -73,8 +34,10 @@
         color: #e0e0e0;
         padding: 8px;
         overflow-y: auto;
-        border-left: 1px solid #555;
-        border-right: 1px solid #555;
+        margin-top: 48px;
+      }
+      #output[connected] {
+        margin-top: 0;
       }
       .output-message.error {
         display: block;
@@ -142,30 +105,23 @@
         flex: 1;
       }
     </style>
-    <div id="toolbar" connected$="[[_isConnected]]">
-      <img class="logo" src="./assets/logo.png">
 
-      <div class="control">
-        <label for="hostname">Hostname</label>
-        <input id="hostname" value="{{hostname::input}}" tabindex="0">
-      </div>
+    <neuro-toolbar
+      id="toolbar"
+      connected="[[_isConnected]]"
+      on-connect="connect"
+      on-disconnect="disconnect"
+      on-show-settings="_openOptions"
+      hostname="{{hostname}}"
+      port="{{port}}"
+    ></neuro-toolbar>
 
-      <div class="control">
-        <label for="port">Port</label>
-        <input id="port" value="{{port::input}}">
-      </div>
-
-      <button class="ranvier-btn connect" on-tap="connect" hidden$="[[_isConnected]]">Connect</button>
-      <button class="ranvier-btn connect" on-tap="disconnect" hidden$="[[!_isConnected]]">Disconnect</button>
-      <span class="options" title="Options" on-tap="_openOptions">&#x2699;</span>
-    </div>
-
-    <div id="output"></div>
+    <div id="output" connected$="[[_isConnected]]"></div>
 
     <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
 
-    <div class="bottom-toolbar">
-      <player-display class="player-display" data="[[playerData]]" hidden$="[[!playerData]]"></player-display>
+    <div class="bottom-toolbar" hidden$="[[!playerData]]">
+      <player-display class="player-display" data="[[playerData]]"></player-display>
       <system-menu
         class="system-menu"
         on-toggle-quests="_toggleQuests"

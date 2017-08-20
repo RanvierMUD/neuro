@@ -38,12 +38,23 @@
            url('./assets/fonts/roboto-v16-latin-regular.woff2') format('woff2'),
            url('./assets/fonts/roboto-v16-latin-regular.woff') format('woff');
     }
-
+    @font-face {
+      font-family: 'Saira Condensed';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Saira Condensed'), local('SairaCondensed-Regular'), url('./assets/fonts/SairaCondensed-Regular.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Material Icons'), local('MaterialIcons-Regular'), url('./assets/fonts/MaterialIcons-Regular.woff2') format('woff2');
+    }
     html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Roboto', sans-serif;
-      font-size: 14px;
+      font-family: 'Saira Condensed', sans-serif;
+      font-size: 16px;
       box-sizing: border-box;
     }
     </style>

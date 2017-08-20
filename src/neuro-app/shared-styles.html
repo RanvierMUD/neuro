@@ -1,29 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
 <dom-module id="shared-styles">
   <template>
     <style>
-      .ranvier-btn {
-        background-color: var(--ranvier-green);
-        border: 1px solid rgb(167, 202, 164);
-        border-radius: 8px;
-        box-shadow: 2px 2px 4px #333;
-        color: #fff;
-        cursor: pointer;
-        font-weight: bold;
-        padding: 8px 12px;
-      }
-      .ranvier-btn:hover {
-        background-color: #598a54;
-      }
-      .ranvier-btn:active {
-        background-color: #4b7346;
-      }
-      .ranvier-btn:focus {
-        outline: none;
+      [hidden] {
+        display: none !important;
       }
 
+      .material-icons {
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;  /* Preferred icon size */
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+
+        /* Support for all WebKit browsers. */
+        -webkit-font-smoothing: antialiased;
+        /* Support for Safari and Chrome. */
+        text-rendering: optimizeLegibility;
+
+        /* Support for Firefox. */
+        -moz-osx-font-smoothing: grayscale;
+
+        /* Support for IE. */
+        font-feature-settings: 'liga';
+      }
       input[type=text] {
         border: 0;
         box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
+        font-family: 'Saira Condensed', sans-serif;
+        font-size: 16px;
         padding: 4px;
       }
     </style>

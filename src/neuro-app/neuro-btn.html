@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="neuro-btn">
+  <template>
+    <style include="shared-styles">
+      :host {
+        border-radius: 50%;
+        border: 2px solid var(--neuro-btn-bg, var(--ranvier-green));
+        background-color: transparent;
+        width: 40px;
+        height: 40px;
+        color: #fff;
+        display: flex;
+        padding: 2px;
+        user-select: none;
+        cursor: pointer;
+        transition: all 200ms ease;
+      }
+      .wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--neuro-btn-bg, var(--ranvier-green));
+        border-radius: 50%;
+        border: 2px solid transparent;
+        font-size: var(--neuro-btn-font-size, 26px);
+        height: var(--neuro-btn-icon-size, 28px);
+        width: var(--neuro-btn-icon-size, 28px);
+        font-weight: bold;
+        text-shadow: 0 0 2px #000;
+      }
+      :host(:hover) {
+        border-color: var(--neuro-btn-hover-bg, rgb(205, 260, 200));
+      }
+      :host([hidden]) {
+        display: none !important;
+      }
+    </style>
+    <div class="wrapper">
+      <i class="material-icons"><slot></slot></i>
+    </div>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class NeuroBtn extends Polymer.Element {
+      static get is() { return 'neuro-btn'; }
+      static get properties() {
+        return { };
+      }
+    }
+
+    window.customElements.define(NeuroBtn.is, NeuroBtn);
+  </script>
+</dom-module>
