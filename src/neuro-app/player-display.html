@@ -10,12 +10,15 @@
         height: 64px;
         background-color: #333;
         display: flex;
-        flex-direction: row;
         align-items: center;
       }
 
-      neuro-statbar {
+      .stat {
         margin: 0 auto;
+        display: flex;
+        align-items: center;
+      }
+      neuro-statbar {
         width: 320px;
       }
       .label {
@@ -40,23 +43,31 @@
       }
     </style>
     <template is="dom-if" if="[[data.attributes.health]]">
-      <div class="label">Health</div>
-      <neuro-statbar class="hp" current-value="[[data.attributes.health.current]]" max-value="[[data.attributes.health.max]]"></neuro-statbar>
+      <div class="stat">
+        <div class="label">Health</div>
+        <neuro-statbar class="hp" current-value="[[data.attributes.health.current]]" max-value="[[data.attributes.health.max]]"></neuro-statbar>
+      </div>
     </template>
 
     <template is="dom-if" if="[[data.attributes.energy]]">
-      <div class="label">Energy</div>
-      <neuro-statbar class="energy" current-value="[[data.attributes.energy.current]]" max-value="[[data.attributes.energy.max]]"></neuro-statbar>
+      <div class="stat">
+        <div class="label">Energy</div>
+        <neuro-statbar class="energy" current-value="[[data.attributes.energy.current]]" max-value="[[data.attributes.energy.max]]"></neuro-statbar>
+      </div>
     </template>
 
     <template is="dom-if" if="[[data.attributes.favor]]">
-      <div class="label">Favor</div>
-      <neuro-statbar class="favor" current-value="[[data.attributes.favor.current]]" max-value="[[data.attributes.favor.max]]"></neuro-statbar>
+      <div class="stat">
+        <div class="label">Favor</div>
+        <neuro-statbar class="favor" current-value="[[data.attributes.favor.current]]" max-value="[[data.attributes.favor.max]]"></neuro-statbar>
+      </div>
     </template>
 
     <template is="dom-if" if="[[data.attributes.mana]]">
-      <div class="label">Mana</div>
-      <neuro-statbar class="mana" current-value="[[data.attributes.mana.current]]" max-value="[[data.attributes.mana.max]]"></neuro-statbar>
+      <div class="stat">
+        <div class="label">Mana</div>
+        <neuro-statbar class="mana" current-value="[[data.attributes.mana.current]]" max-value="[[data.attributes.mana.max]]"></neuro-statbar>
+      </div>
     </template>
   </template>
 
