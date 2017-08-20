@@ -136,7 +136,6 @@
         }
 
         return this.quests.map(quest => {
-          quest[1].progress.percent = 30;
           return ({ entityReference: quest[0], data: quest[1] })
         });
       }
