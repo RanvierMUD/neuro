@@ -13,11 +13,12 @@ bundle.
 
 ## Running
 
+Neuro requires Bower to automatically install front-end dependencies.
+
 ```
 git clone https://github.com/shawncplus/neuro
 cd neuro
 npm install
-bower install
 npm run start
 ```
 
