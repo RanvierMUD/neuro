@@ -1,6 +1,6 @@
 # \<Neuro\>
 
-Neuro is a simple and easily-extensible websocket client to use with the [Ranvier](https://ranviermud.com) MUD game engine.
+Neuro is a simple and easily-extensible websocket client to use with the [Ranvier](http://ranviermud.com) MUD game engine.
 
 <p align="center"><img width="640" src="https://raw.githubusercontent.com/shawncplus/neuro/master/assets/demo.gif"></p>
 
