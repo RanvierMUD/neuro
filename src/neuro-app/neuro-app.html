@@ -9,9 +9,11 @@
 <link rel="import" href="options-menu.html">
 <link rel="import" href="neuro-toolbar.html">
 <link rel="import" href="system-menu.html">
+<link rel="import" href="neuro-theme.html">
 
 <dom-module id="neuro-app">
   <template>
+    <style include="neuro-theme"></style>
     <style include="shared-styles">
       :host {
         display: block;
@@ -219,6 +221,7 @@
       ready() {
         super.ready();
         this.ansi_up = new AnsiUp;
+        this.ansi_up.use_classes = true;
         this._history = [];
         this._historyIndex = 0;
         if (typeof require === 'function') {
