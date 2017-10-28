@@ -224,6 +224,9 @@
         this.ansi_up.use_classes = true;
         this._history = [];
         this._historyIndex = 0;
+        this.foregroundAudio = document.createElement('audio');
+        this.backgroundAudio = document.createElement('audio');
+
         if (typeof require === 'function') {
           var Store = require('electron-store');
           this.store = new Store;
@@ -271,12 +274,36 @@
         this.$.output.scrollTop = this.$.output.scrollHeight;
       }
 
+      playAudio(audioCue, options = {}) {
+        const {
+          background = false,
+          looping    = false,
+        } = options;
+
+        const audio = background
+          ? this.backgroundAudio
+          : this.foregroundAudio;
+
+        const filetype = audioCue.includes('.') ? '' : '.mp3';
+        audio.src = './assets/' + audioCue + filetype;
+        audio.loop = looping;
+        audio.play();
+      }
+
       _wsOnMessage(e) {
         var data = JSON.parse(e.data);
-        if (data.type === 'message') {
-          this.writeOutput(data.message);
-        } else if (data.type === 'data') {
-          this.playerData = data.data;
+        switch (data.type) {
+          case 'message':
+            this.writeOutput(data.message);
+            break;
+          case 'data':
+            this.playerData = data.data;
+            break;
+          case 'audio':
+            this.playAudio(data.audioCue, data.options);
+            break;
+          default:
+            console.log('Unknown WS message received: ', data);
         }
       }
 
