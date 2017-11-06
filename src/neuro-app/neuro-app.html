@@ -192,6 +192,7 @@
               return {
                 fontSize: 14,
                 selectLastCommand: false,
+                muteAudio: false
               };
             },
           },
@@ -217,6 +218,11 @@
           },
         };
       }
+      static get observers() {
+        return [
+          '_mutedChanged(options.muteAudio)'
+        ];
+      }
 
       ready() {
         super.ready();
@@ -226,13 +232,13 @@
         this._historyIndex = 0;
         this.foregroundAudio = document.createElement('audio');
         this.backgroundAudio = document.createElement('audio');
-
         if (typeof require === 'function') {
           var Store = require('electron-store');
           this.store = new Store;
           this.options = this.store.get('options', {
             fontSize: 14,
             selectLastCommand: false,
+            muteAudio: false
           });
         }
       }
@@ -285,13 +291,13 @@
           : this.foregroundAudio;
 
         const filetype = audioCue.includes('.') ? '' : '.mp3';
-        audio.src = './assets/' + audioCue + filetype;
-        audio.loop = looping;
+        audio.src = './assets/audio/' + audioCue + filetype;
+        audio.loop = looping || false;
         audio.play();
       }
 
       _wsOnMessage(e) {
-        var data = JSON.parse(e.data);
+        const data = JSON.parse(e.data);
         switch (data.type) {
           case 'message':
             this.writeOutput(data.message);
@@ -396,6 +402,13 @@
 
       _closeOptions() {
         this._optionsOpen = false;
+      }
+
+      _mutedChanged(muteAudio) {
+        if (this.backgroundAudio && this.foregroundAudio) {
+          this.backgroundAudio.muted = muteAudio;
+          this.foregroundAudio.muted = muteAudio;
+        }
       }
 
       _optionsSaved() {
