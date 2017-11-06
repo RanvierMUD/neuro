@@ -192,7 +192,8 @@
               return {
                 fontSize: 14,
                 selectLastCommand: false,
-                muteAudio: false
+                muteAudio: false,
+                volume: 100
               };
             },
           },
@@ -220,7 +221,8 @@
       }
       static get observers() {
         return [
-          '_mutedChanged(options.muteAudio)'
+          '_mutedChanged(options.muteAudio)',
+          '_volumeChanged(options.volume)'
         ];
       }
 
@@ -238,9 +240,15 @@
           this.options = this.store.get('options', {
             fontSize: 14,
             selectLastCommand: false,
-            muteAudio: false
+            muteAudio: false,
+            volume: 100
           });
         }
+
+        this.foregroundAudio.muted = this.options.muteAudio;
+        this.backgroundAudio.muted = this.options.muteAudio;
+        this.foregroundAudio.volume = this.options.volume;
+        this.backgroundAudio.volume = this.options.volume;
       }
 
       connect() {
@@ -408,6 +416,14 @@
         if (this.backgroundAudio && this.foregroundAudio) {
           this.backgroundAudio.muted = muteAudio;
           this.foregroundAudio.muted = muteAudio;
+        }
+      }
+
+      _volumeChanged(volume) {
+        volume = volume || 0.01
+        if (this.backgroundAudio && this.foregroundAudio) {
+          this.backgroundAudio.volume = (volume / 100);
+          this.foregroundAudio.volume = (volume / 100);
         }
       }
 

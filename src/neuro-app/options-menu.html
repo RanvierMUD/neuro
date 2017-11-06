@@ -78,6 +78,10 @@
         <label>Mute Audio</label>
         <input type="checkbox" checked="{{options.muteAudio::change}}">
       </div>
+      <div class="control">
+        <label>Audio Volume</label>
+        <input type="range" min="0" max="100" value="{{options.volume::change}}">
+      </div>
     </div>
     <div class="buttons">
       <neuro-btn class="save" on-tap="save">save</neuro-btn>
