@@ -7,59 +7,59 @@
 <dom-module id="options-menu">
   <template>
     <style include="shared-styles">
-    :host {
-      border: 2px solid #666;
-      padding: 4px;
-      background-color: #333;
-      display: flex;
-      flex-direction: column;
-    }
-    .buttons, .toolbar {
-      display: flex;
-      flex-direction: row;
-    }
-    .toolbar {
-      font-size: 24px;
-      color: #fff;
-      padding: 0 4px;
-    }
-    .toolbar__title  {
-      flex: 1;
-    }
-    .form {
-      padding: 12px;
-      flex: 1;
-    }
-    .control {
-      margin-bottom: 12px;
-      color: #fff;
-      display: flex;
-    }
-    .control:last-child {
-      margin-bottom: 0;
-    }
-    .control label {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 16px;
-      flex: 1;
-    }
-    .control input {
-      flex: 1;
-    }
-    .close {
-      cursor: pointer;
-      font-size: 40px;
-      line-height: 24px;
-    }
-    .buttons {
-      padding: 4px;
-      justify-content: flex-end;
-    }
-    .save {
-      width: 32px;
-      height: 32px;
-    }
+      :host {
+        border: 2px solid #666;
+        padding: 4px;
+        background-color: #333;
+        display: flex;
+        flex-direction: column;
+      }
+      .buttons, .toolbar {
+        display: flex;
+        flex-direction: row;
+      }
+      .toolbar {
+        font-size: 24px;
+        color: #fff;
+        padding: 0 4px;
+      }
+      .toolbar__title  {
+        flex: 1;
+      }
+      .form {
+        padding: 12px;
+        flex: 1;
+      }
+      .control {
+        margin-bottom: 12px;
+        color: #fff;
+        display: flex;
+      }
+      .control:last-child {
+        margin-bottom: 0;
+      }
+      .control label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 16px;
+        flex: 1;
+      }
+      .control input {
+        flex: 1;
+      }
+      .close {
+        cursor: pointer;
+        font-size: 40px;
+        line-height: 24px;
+      }
+      .buttons {
+        padding: 4px;
+        justify-content: flex-end;
+      }
+      .save {
+        width: 32px;
+        height: 32px;
+      }
     </style>
     <div class="toolbar">
       <span class="toolbar__title">Options</span>
@@ -70,10 +70,13 @@
         <label>Font Size</label>
         <input type="number" min="8" max="40" value="{{options.fontSize::input}}">
       </div>
-
       <div class="control">
         <label>Select Last Command</label>
         <input type="checkbox" checked="{{options.selectLastCommand::change}}">
+      </div>
+      <div class="control">
+        <label>Mute Audio</label>
+        <input type="checkbox" checked="{{options.muteAudio::change}}">
       </div>
     </div>
     <div class="buttons">
