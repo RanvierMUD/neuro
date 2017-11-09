@@ -1,3 +1,25 @@
-"levelup.mp3" by http://freesound.org/people/7c/
+The following licenses are approved for noncommercial or commercial usage.
+
+CC Attribution 3.0 Unported Licensed
+https://creativecommons.org/licenses/by/3.0/
+
+"player.death.mp3" by Sean O'Donohue (http://freesound.org/people/luminousfridge)
+"skill.fireball.mp3" by Sean O'Donohue & dogfishkid (http://freesound.org/people/dogfishkid/)
+
+************* NOTICE ***************
+
+The following licenses require noncommercial usage.
+You must replace the specified audio files if you want to release a commercial version of Neuro.
+
+
+CC Attribution-NonCommercial 3.0 Unported
+https://creativecommons.org/licenses/by-nc/3.0/
+
+"skill.heal.mp3" by Sean O'Donohue & Timber (http://freesound.org/people/Timbre/) & bondegi (http://freesound.org/people/bondegi/)
+
+--
+
 CC Sampling+ Licensed
 https://creativecommons.org/licenses/sampling+/1.0/
+
+"levelup.mp3" by 7c http://freesound.org/people/7c/
