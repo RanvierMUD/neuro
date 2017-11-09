@@ -247,8 +247,8 @@
 
         this.foregroundAudio.muted = this.options.muteAudio;
         this.backgroundAudio.muted = this.options.muteAudio;
-        this.foregroundAudio.volume = this.options.volume;
-        this.backgroundAudio.volume = this.options.volume;
+        this.foregroundAudio.volume = (this.options.volume / 100);
+        this.backgroundAudio.volume = (this.options.volume / 100);
       }
 
       connect() {
