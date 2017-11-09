@@ -298,10 +298,12 @@
           ? this.backgroundAudio
           : this.foregroundAudio;
 
+        audio.pause();
+
         const filetype = audioCue.includes('.') ? '' : '.mp3';
         audio.src = './assets/audio/' + audioCue + filetype;
         audio.loop = looping || false;
-        audio.play();
+        audio.play().catch(e => console.error('Failed to play ' + audioCue, e));
       }
 
       _wsOnMessage(e) {
