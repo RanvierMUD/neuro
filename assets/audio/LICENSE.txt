@@ -1,10 +1,20 @@
 The following licenses are approved for noncommercial or commercial usage.
 
+CC0 1.0 Universal (Public Domain Dedication)
+https://creativecommons.org/publicdomain/zero/1.0/
+"skill.potion.mp3" by Q.K. (http://freesound.org/people/Q.K./)
+"skill.secondwind.mp3" by crackles04 (http://freesound.org/people/crackles04/)
+"skill.shieldblock.mp3" by zaneclampett (http://freesound.org/people/zaneclampett/) and Sean O'Donohue
+
 CC Attribution 3.0 Unported Licensed
 https://creativecommons.org/licenses/by/3.0/
 
 "player.death.mp3" by Sean O'Donohue (http://freesound.org/people/luminousfridge)
 "skill.fireball.mp3" by Sean O'Donohue & dogfishkid (http://freesound.org/people/dogfishkid/)
+"skill.plea.mp3" by InspectorJ (http://freesound.org/people/InspectorJ) & Sean O'Donohue
+"skill.lunge.mp3" by InspectorJ
+"skill.rend.mp3" by FoolBoyMedia (http://freesound.org/people/FoolBoyMedia/) & ZachFBStudios (http://freesound.org/people/zachfbstudios/) & Sean O'Donohue
+
 
 ************* NOTICE ***************
 
