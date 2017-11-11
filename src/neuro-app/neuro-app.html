@@ -192,6 +192,8 @@
               return {
                 fontSize: 14,
                 selectLastCommand: false,
+                muteAudio: false,
+                volume: 100
               };
             },
           },
@@ -217,6 +219,12 @@
           },
         };
       }
+      static get observers() {
+        return [
+          '_mutedChanged(options.muteAudio)',
+          '_volumeChanged(options.volume)'
+        ];
+      }
 
       ready() {
         super.ready();
@@ -224,14 +232,23 @@
         this.ansi_up.use_classes = true;
         this._history = [];
         this._historyIndex = 0;
+        this.foregroundAudio = document.createElement('audio');
+        this.backgroundAudio = document.createElement('audio');
         if (typeof require === 'function') {
           var Store = require('electron-store');
           this.store = new Store;
           this.options = this.store.get('options', {
             fontSize: 14,
             selectLastCommand: false,
+            muteAudio: false,
+            volume: 100
           });
         }
+
+        this.foregroundAudio.muted = this.options.muteAudio;
+        this.backgroundAudio.muted = this.options.muteAudio;
+        this.foregroundAudio.volume = (this.options.volume / 100);
+        this.backgroundAudio.volume = (this.options.volume / 100);
       }
 
       connect() {
@@ -271,12 +288,38 @@
         this.$.output.scrollTop = this.$.output.scrollHeight;
       }
 
+      playAudio(audioCue, options = {}) {
+        const {
+          background = false,
+          looping    = false,
+        } = options;
+
+        const audio = background
+          ? this.backgroundAudio
+          : this.foregroundAudio;
+
+        audio.pause();
+
+        const filetype = audioCue.includes('.') ? '' : '.mp3';
+        audio.src = './assets/audio/' + audioCue + filetype;
+        audio.loop = looping || false;
+        audio.play().catch(e => console.error('Failed to play ' + audioCue, e));
+      }
+
       _wsOnMessage(e) {
-        var data = JSON.parse(e.data);
-        if (data.type === 'message') {
-          this.writeOutput(data.message);
-        } else if (data.type === 'data') {
-          this.playerData = data.data;
+        const data = JSON.parse(e.data);
+        switch (data.type) {
+          case 'message':
+            this.writeOutput(data.message);
+            break;
+          case 'data':
+            this.playerData = data.data;
+            break;
+          case 'audio':
+            this.playAudio(data.audioCue, data.options);
+            break;
+          default:
+            console.log('Unknown WS message received: ', data);
         }
       }
 
@@ -369,6 +412,21 @@
 
       _closeOptions() {
         this._optionsOpen = false;
+      }
+
+      _mutedChanged(muteAudio) {
+        if (this.backgroundAudio && this.foregroundAudio) {
+          this.backgroundAudio.muted = muteAudio;
+          this.foregroundAudio.muted = muteAudio;
+        }
+      }
+
+      _volumeChanged(volume) {
+        volume = volume || 0.01
+        if (this.backgroundAudio && this.foregroundAudio) {
+          this.backgroundAudio.volume = (volume / 100);
+          this.foregroundAudio.volume = (volume / 100);
+        }
       }
 
       _optionsSaved() {

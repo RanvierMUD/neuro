@@ -41,3 +41,4 @@ from without tearing your hair out. Out of the box it has the following features
 * System menu bar for hiding/showing quests and effects
 * Draggable windows (Just add `Neuro.DraggableBehavior` to any element)
 * Auto-linking urls
+* Sound effects and music
