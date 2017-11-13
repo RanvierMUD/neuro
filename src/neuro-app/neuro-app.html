@@ -232,7 +232,7 @@
         this.ansi_up.use_classes = true;
         this._history = [];
         this._historyIndex = 0;
-        this.foregroundAudio = document.createElement('audio');
+        this.foregroundAudio = [document.createElement('audio')];
         this.backgroundAudio = document.createElement('audio');
         if (typeof require === 'function') {
           var Store = require('electron-store');
@@ -249,6 +249,10 @@
         this.backgroundAudio.muted = this.options.muteAudio;
         this.foregroundAudio.volume = (this.options.volume / 100);
         this.backgroundAudio.volume = (this.options.volume / 100);
+      }
+
+      get maximumForegroundAudioTracks() {
+        return 3;
       }
 
       connect() {
@@ -292,6 +296,7 @@
         const {
           background = false,
           looping    = false,
+          stop       = false,
         } = options;
 
         const audio = background
@@ -299,9 +304,34 @@
           : this.foregroundAudio;
 
         const filetype = audioCue.includes('.') ? '' : '.mp3';
-        audio.src = './assets/audio/' + audioCue + filetype;
-        audio.loop = looping || false;
-        audio.play();
+
+        // Handle a request to stop background audio, and then return if we're not playing anything new.
+        if (stop) {
+          this.backgroundAudio.pause();
+          if (!audioCue) {
+            return;
+          }
+        }
+
+        if (background) {
+          audio.pause();
+          play(audio, audioCue, looping);
+        } else {
+          if (audio.length > this.maximumForegroundAudioTracks) {
+            let oldest = audio.shift();
+            oldest.pause();
+            oldest = null;
+          }
+          const newTrack = document.createElement('audio');
+          audio.push(newTrack);
+          play(newTrack, audioCue, looping);
+        }
+
+        function play(audioTrack, audioCue, looping) {
+          audioTrack.src = './assets/audio/' + audioCue + filetype;
+          audioTrack.loop = looping || false;
+          audioTrack.play();
+        }
       }
 
       _wsOnMessage(e) {

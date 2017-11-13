@@ -5,6 +5,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 "skill.potion.mp3" by Q.K. (http://freesound.org/people/Q.K./)
 "skill.secondwind.mp3" by crackles04 (http://freesound.org/people/crackles04/)
 "skill.shieldblock.mp3" by zaneclampett (http://freesound.org/people/zaneclampett/) and Sean O'Donohue
+"menu_music.mp3" by anoddhue (https://soundcloud.com/anoddhue) & arseniiv (http://freesound.org/people/arseniiv/)
 
 CC Attribution 3.0 Unported Licensed
 https://creativecommons.org/licenses/by/3.0/
