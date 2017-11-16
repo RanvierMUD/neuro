@@ -79,8 +79,12 @@
         <input type="checkbox" checked="{{options.muteAudio::change}}">
       </div>
       <div class="control">
-        <label>Audio Volume</label>
-        <input type="range" min="0" max="100" value="{{options.volume::change}}">
+        <label>Background Audio Volume</label>
+        <input type="range" min="0" max="100" value="{{options.volume.background::change}}">
+      </div>
+      <div class="control">
+        <label>Sound Effect Volume</label>
+        <input type="range" min="0" max="100" value="{{options.volume.foreground::change}}">
       </div>
     </div>
     <div class="buttons">

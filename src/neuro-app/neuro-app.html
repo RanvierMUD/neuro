@@ -90,7 +90,7 @@
       }
       #optionsMenu {
         position: absolute;
-        height: 200px;
+        height: 380px;
         width: 384px;
         top: calc(50% - 100px);
         left: calc(50% - 150px);
@@ -193,7 +193,10 @@
                 fontSize: 14,
                 selectLastCommand: false,
                 muteAudio: false,
-                volume: 100
+                volume: {
+                  background: 100,
+                  foreground: 100,
+                }
               };
             },
           },
@@ -219,10 +222,11 @@
           },
         };
       }
+
       static get observers() {
         return [
           '_mutedChanged(options.muteAudio)',
-          '_volumeChanged(options.volume)'
+          '_volumeChanged(options.volume.background, options.volume.foreground)'
         ];
       }
 
@@ -449,11 +453,12 @@
         }
       }
 
-      _volumeChanged(volume) {
-        volume = volume || 0.01
+      _volumeChanged(backgroundChange, foregroundChange) {
         if (this.backgroundAudio && this.foregroundAudio) {
-          this.backgroundAudio.volume = (volume / 100);
-          this.foregroundAudio.volume = (volume / 100);
+          backgroundChange = backgroundChange || this.backgroundAudio.volume;
+          foregroundChange = foregroundChange || this.backgroundAudio.volume;
+          this.backgroundAudio.volume = (backgroundChange / 100);
+          this.foregroundAudio.volume = (foregroundChange / 100);
         }
       }
 
