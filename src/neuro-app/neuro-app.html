@@ -236,7 +236,7 @@
         this.ansi_up.use_classes = true;
         this._history = [];
         this._historyIndex = 0;
-        this.foregroundAudio = [document.createElement('audio')];
+        this.foregroundAudio = [];
         this.backgroundAudio = document.createElement('audio');
         if (typeof require === 'function') {
           var Store = require('electron-store');
@@ -259,7 +259,7 @@
       }
 
       get maximumForegroundAudioTracks() {
-        return 3;
+        return 10;
       }
 
       connect() {
