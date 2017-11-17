@@ -254,8 +254,8 @@
 
         this.foregroundAudio.muted = this.options.muteAudio;
         this.backgroundAudio.muted = this.options.muteAudio;
-        this.foregroundAudio.volume = (this.options.volume / 100);
-        this.backgroundAudio.volume = (this.options.volume / 100);
+        this.foregroundAudio.volume = (this.options.volume.foreground / 100);
+        this.backgroundAudio.volume = (this.options.volume.background / 100);
       }
 
       get maximumForegroundAudioTracks() {
@@ -310,11 +310,16 @@
           ? this.backgroundAudio
           : this.foregroundAudio;
 
-        const filetype = audioCue.includes('.') ? '' : '.mp3';
+        const filetype = (audioCue || '').includes('.')
+          ? ''
+          : '.mp3';
 
         // Handle a request to stop background audio, and then return if we're not playing anything new.
         if (stop) {
+          console.log('Stopping background audio.');
           this.backgroundAudio.pause();
+          this.backgroundAudio.src = '';
+          console.log('Audio cue is ', audioCue);
           if (!audioCue) {
             return;
           }
@@ -458,8 +463,8 @@
 
       _volumeChanged(backgroundChange, foregroundChange) {
         if (this.backgroundAudio && this.foregroundAudio) {
-          backgroundChange = backgroundChange || this.backgroundAudio.volume;
-          foregroundChange = foregroundChange || this.backgroundAudio.volume;
+          backgroundChange = backgroundChange && isFinite(backgroundChange) || this.backgroundAudio.volume;
+          foregroundChange = foregroundChange && isFinite(foregroundChange) || this.foregroundAudio.volume;
           this.backgroundAudio.volume = (backgroundChange / 100);
           this.foregroundAudio.volume = (foregroundChange / 100);
         }
