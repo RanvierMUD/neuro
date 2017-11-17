@@ -304,6 +304,7 @@
           background = false,
           looping    = false,
           stop       = false,
+          volume     = 1 // multiplier, only applied to foreground sfx
         } = options;
 
         const audio = background
@@ -336,6 +337,11 @@
           }
           const newTrack = document.createElement('audio');
           audio.push(newTrack);
+
+          const maxVolume = this.options.volume.foreground / 100;
+          const calculatedVolume = maxVolume * volume;
+          console.log('Calculating ' + audioCue + ' volume to be ' + calculatedVolume + ' out of maximum ' + maxVolume);
+          newTrack.volume = Math.max(0, Math.min(maxVolume, calculatedVolume));
           play(newTrack, audioCue, looping);
         }
 
