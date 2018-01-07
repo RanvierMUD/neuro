@@ -276,7 +276,10 @@
         if (data.type === 'message') {
           this.writeOutput(data.message);
         } else if (data.type === 'data') {
-          this.playerData = data.data;
+          if (!this.playerData) {
+            this.playerData = {};
+          }
+          this.set('playerData.' + data.group, data.data);
         }
       }
 
