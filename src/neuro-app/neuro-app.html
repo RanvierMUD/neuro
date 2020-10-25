@@ -118,7 +118,7 @@
       port="{{port}}"
     ></neuro-toolbar>
 
-    <div id="output" connected$="[[_isConnected]]"></div>
+    <div id="output" on-click="_setInputFocus" connected$="[[_isConnected]]"></div>
 
     <input id="input" type="text" value="{{input::input}}" on-keydown="_checkEnter"></input>
 
@@ -340,6 +340,10 @@
             this.input = '';
           }
         }
+      }
+
+      _setInputFocus(){
+        this.$.input.focus();
       }
 
       _effectsVisible() {
