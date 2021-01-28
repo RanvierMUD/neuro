@@ -19,7 +19,7 @@
   "author": "Shawn Biddle <shawncplus@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^10.1.4",
+    "electron": "^10.2.0",
     "electron-packager": "^15.1.0"
   },
   "dependencies": {
